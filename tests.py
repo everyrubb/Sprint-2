@@ -4,7 +4,7 @@ import pytest
 class TestBooksCollector:
 
     #проверка добавления книг в список
-    def test_add_new_book_add_five_books(self, object, prepare_books):
+    def test_add_new_book_add_five_books_successfully(self, object, prepare_books):
         assert len(object.get_books_genre()) == 5
 
     #проверка добавления книг с одинаковым названием в список
@@ -29,7 +29,7 @@ class TestBooksCollector:
         assert object.get_books_genre().get(name) == ''
 
     # проверка установления жанра книги
-    def test_set_book_genre_get_genre(self, object, prepare_books):
+    def test_set_book_genre_get_genre_successfully(self, object, prepare_books):
         name = 'Что делать, если ваш кот хочет вас убить'
         assert object.get_book_genre(name) == 'Фантастика'
 
