@@ -61,14 +61,27 @@ class TestBooksCollector:
         assert 'Гордость и предубеждение и зомби' and 'Шурик Хомлс и Воланд' not in object.get_books_for_children()
 
     # проверка добавления книги в избранное
-    def test_add_book_in_favorites_add_one_books(self, object, prepare_books):
+    def test_add_book_in_favorites_add_one_books_successfully(self, object, prepare_books):
         name = 'Колобок'
         object.add_book_in_favorites(name)
 
         assert object.get_list_of_favorites_books() == [name]
 
+    # проверка, что нельзя добавить книгу дважды в избранное
+    def test_add_book_in_favorites_same_books(self, object, prepare_books):
+        object.add_book_in_favorites('Что делать, если ваш кот хочет вас убить')
+        object.add_book_in_favorites('Что делать, если ваш кот хочет вас убить')
+
+        assert len(object.get_list_of_favorites_books()) == 1
+
+    # проверка, что нельзя добавить книгу не из списка books_genre
+    def test_add_to_favorites_unlisted_books(self, object, prepare_books):
+        object.add_book_in_favorites('Телефонный телефон')
+
+        assert len(object.get_list_of_favorites_books()) == 0
+
     # проверка удаления книги из избранного
-    def test_delete_book_from_favorites_remove_one_books(self, object, prepare_books):
+    def test_delete_book_from_favorites_removes_book_successfully(self, object, prepare_books):
         name = 'Три дома'
         object.add_book_in_favorites(name)
         object.delete_book_from_favorites(name)
