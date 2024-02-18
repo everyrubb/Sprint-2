@@ -56,9 +56,9 @@ class TestBooksCollector:
     # проверка что в списке книг для детей нет книг для взрослых
     def test_get_books_for_children_adult_books_not_included_the_list(self, object, book, genre):
         object.add_new_book(book)
-        object.add_new_book(genre)
+        object.set_book_genre(book, genre)
 
-        assert 'Гордость и предубеждение и зомби' and 'Шурик Хомлс и Воланд' not in object.get_books_for_children()
+        assert 'Гордость и предубеждение и зомби' not in object.get_books_for_children() and 'Шурик Хомлс и Воланд' not in object.get_books_for_children()
 
     # проверка добавления книги в избранное
     def test_add_book_in_favorites_add_one_books_successfully(self, object, prepare_books):
@@ -77,7 +77,6 @@ class TestBooksCollector:
     # проверка, что нельзя добавить книгу не из списка books_genre
     def test_add_to_favorites_unlisted_books(self, object, prepare_books):
         object.add_book_in_favorites('Телефонный телефон')
-
         assert len(object.get_list_of_favorites_books()) == 0
 
     # проверка удаления книги из избранного
