@@ -1,24 +1,64 @@
-from main import BooksCollector
+import pytest
 
-# класс TestBooksCollector объединяет набор тестов, которыми мы покрываем наше приложение BooksCollector
-# обязательно указывать префикс Test
+
 class TestBooksCollector:
 
-    # пример теста:
-    # обязательно указывать префикс test_
-    # дальше идет название метода, который тестируем add_new_book_
-    # затем, что тестируем add_two_books - добавление двух книг
-    def test_add_new_book_add_two_books(self):
-        # создаем экземпляр (объект) класса BooksCollector
-        collector = BooksCollector()
+    def test_add_new_book_add_five_books(self, object, prepare_books):
 
-        # добавляем две книги
-        collector.add_new_book('Гордость и предубеждение и зомби')
-        collector.add_new_book('Что делать, если ваш кот хочет вас убить')
+        assert len(object.get_books_genre()) == 5
 
-        # проверяем, что добавилось именно две
-        # словарь books_rating, который нам возвращает метод get_books_rating, имеет длину 2
-        assert len(collector.get_books_rating()) == 2
+    def test_add_new_book_add_similar_books(self, object):
 
-    # напиши свои тесты ниже
-    # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
+        object.add_new_book('Что делать, если ваш кот хочет вас убить')
+        object.add_new_book('Что делать, если ваш кот хочет вас убить')
+
+        assert len(object.get_books_genre()) == 1
+
+    def test_add_new_book_add_books_more_than_40_symbols(self, object):
+
+        name = 'Что делать, если ваш кот хочет вас убить убить убить убить убить убить убить убить убить убить'
+        object.add_new_book(name)
+
+        assert len(object.get_books_genre()) == 0
+
+    def test_add_new_book_add_books_without_genre(self, object):
+
+        name = 'Что делать, если ваш кот хочет вас убить'
+        object.add_new_book(name)
+
+        assert object.get_books_genre() == {'Что делать, если ваш кот хочет вас убить': ''}
+
+    def test_set_book_genre_get_genre(self, object, prepare_books):
+
+        name = 'Что делать, если ваш кот хочет вас убить'
+
+        assert object.get_book_genre(name) == 'Фантастика'
+
+    def test_get_books_with_specific_genre_five_books_get_list_genre(self, object, prepare_books):
+
+        genre = 'Ужасы'
+
+        assert object.get_books_with_specific_genre(genre) == ['Гордость и предубеждение и зомби', 'Шурик Хомлс и Воланд']
+
+    def test_get_books_for_children_five_books_get_list_book(self, object, prepare_books):
+
+        assert object.get_books_for_children() == ['Что делать, если ваш кот хочет вас убить', 'Колобок', 'Три дома']
+
+    def test_get_books_for_children_adult_books_not_included_the_list(self, object, prepare_books):
+
+        assert 'Гордость и предубеждение и зомби' and 'Шурик Хомлс и Воланд' not in object.get_books_for_children()
+
+    def test_add_book_in_favorites_add_one_books(self, object, prepare_books):
+
+        name = 'Колобок'
+        object.add_book_in_favorites(name)
+
+        assert object.get_list_of_favorites_books() == [name]
+
+    def test_delete_book_from_favorites_remove_one_books(self, object, prepare_books):
+
+        name = 'Три дома'
+        object.add_book_in_favorites(name)
+        object.delete_book_from_favorites(name)
+
+        assert object.get_list_of_favorites_books() == []
