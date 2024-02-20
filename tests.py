@@ -62,7 +62,6 @@ class TestBooksCollector:
     # проверка добавления книги в избранное
     def test_add_book_in_favorites_add_one_books_successfully(self, object, prepare_books):
         object.add_book_in_favorites(fantasy_book)
-
         assert object.get_list_of_favorites_books() == [fantasy_book]
 
     # проверка, что нельзя добавить книгу дважды в избранное
