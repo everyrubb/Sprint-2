@@ -6,9 +6,8 @@ from conftest import fantasy_book, detective_book, child_book, comedy_book, horr
 class TestBooksCollector:
 
     #проверка добавления книг в список
-    def test_add_new_book_add_five_books_successfully(self, object):
+    def test_add_new_book_add_one_book_successfully(self, object):
         object.add_new_book(fantasy_book)
-        object.set_book_genre(fantasy_book, 'Фантастика')
         assert len(object.get_books_genre()) == 1
 
     #проверка добавления книг с одинаковым названием в список
@@ -26,7 +25,7 @@ class TestBooksCollector:
         assert len(object.get_books_genre()) == 0
 
     # проверка, что книги добавляются без жанра
-    def test_add_new_book_add_books_without_genre(self, object):
+    def test_add_new_book_add_book_without_genre(self, object):
         object.add_new_book(fantasy_book)
         assert object.get_books_genre().get(fantasy_book) == ''
 
@@ -35,12 +34,12 @@ class TestBooksCollector:
         assert object.get_book_genre(fantasy_book) == 'Фантастика'
 
     # проверка вывода списка книг с определенным жанром
-    def test_get_books_with_specific_genre_five_books_get_list_genre(self, object, prepare_books):
+    def test_get_books_with_specific_genre_one_book_get_list_genre(self, object, prepare_books):
         genre = 'Ужасы'
         assert object.get_books_with_specific_genre(genre) == [horror_book]
 
     # проверка вывода списка книг, которые подходят детям
-    def test_get_books_for_children_five_books_get_list_book(self, object, prepare_books):
+    def test_get_books_for_children_three_books_get_list_book(self, object, prepare_books):
         assert object.get_books_for_children() == [fantasy_book, child_book, comedy_book]
 
     #один тест с параметризацией, чтобы выполнить задание, однако я везде пользуюсь фикстурой prepare_books для удобства
